@@ -65,6 +65,8 @@ install_meteor() {
 
   curl -sL https://install.meteor.com?release=1.4.1.1 | sh
   return_code $?
+  
+  PATH=$HOME/.meteor:$PATH
 
 }
 
