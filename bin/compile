@@ -1,5 +1,12 @@
 #!/bin/bash
 
+return_code () {
+  if [ ! "$1" -eq 0 ]; then
+    echo "[!] Process bombed. Terminating..."
+    exit 1
+  fi
+}
+
 BUILD_DIR=$1
 CACHE_DIR=$2
 METEOR_HOME=$BUILD_DIR/.meteor/local
@@ -40,31 +47,10 @@ install_node() {
 }
 
 install_meteor() {
-  if [ -f "$METEOR_HOME/usr/bin/meteor" ] ; then
-    status "Skipping Meteor installation. Already installed."
-    return
-  fi
 
-  # status "Install Meteor"
-  # export PATH=/usr/bin:$PATH # necessary for install script to run from URL
-  # curl https://install.meteor.com | sh
-  status "Downloading Meteor install script"
-  METEOR_INSTALL_SCRIPT=install_meteor.sh
-  curl https://install.meteor.com/?release=1.4.1.1 > $METEOR_INSTALL_SCRIPT
+  curl -sL https://install.meteor.com?release=1.4.1.1 | /bin/sh
+  return_code $?
 
-  status "Installing Meteor connected to $MONGO_URL"
-  sed -e '/^#!\/bin\/sh/ s/$/ -x/' \
-    -e 's/set -/#set -/' \
-    -e 's/curl --progress-bar --fail.*/curl "$TARBALL_URL" > meteor-bundle.tgz; tar -xzf meteor-bundle.tgz -C "$INSTALL_TMPDIR" -o/' \
-    $METEOR_INSTALL_SCRIPT > install-meteor-verbose.sh
-  chmod +x install-meteor-verbose.sh
-
-  status "Execute ./install-meteor-verbose.sh"
-  ./install-meteor-verbose.sh
-  status "Done"
-
-  status "Updating PATH with Meteor"
-  PATH=$HOME/.meteor:$PATH
 }
 
 build() {
