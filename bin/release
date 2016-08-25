@@ -6,10 +6,6 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 jq=$DIR/jq
 chmod +x $jq
 
-echo "INSIDE RELEASE"
-ls -la /home/vcap/app/bundle/main.js
-ls -la $BUILD_DIR
-
 extract_mongo_url() {
   # Set if not already present.
   if [ -z "${MONGO_URL}" ]; then
