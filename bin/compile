@@ -12,16 +12,6 @@ return_code () {
   fi
 }
 
-spinner() {
-    local i sp n
-    sp='/-\|'
-    n=${#sp}
-    printf ' '
-    while sleep 0.1; do
-        printf "%s\b" "${sp:i++%n:1}"
-    done
-}
-
 indent() {
   c='s/^/       /'
   case $(uname) in
@@ -91,11 +81,8 @@ build() {
     #npm rebuild 2>&1 | indent
     return_code $?
     status "Executing Meteor build"
-    spinner &
-    meteor build ~/app --directory
+    meteor build ~/app --directory --verbose
     return_code $?
-    kill "$!" # kill the spinner
-    printf '\n'
     
     cd ~/app/bundle/programs/server
     status "Installing npm dependencies post build"
