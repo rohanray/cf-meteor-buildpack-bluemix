@@ -31,6 +31,8 @@ preSystemCheck() {
   make --version 
   status "Check if GCC is installed"
   gcc --version
+  status "CONTENTS of build directory"
+  ls -la $BUILD_DIR
 }
 
 node_version=$(curl --silent --get https://semver.io/node/resolve/4.5.x)
