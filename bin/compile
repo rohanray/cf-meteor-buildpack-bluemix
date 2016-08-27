@@ -99,7 +99,7 @@ build() {
 [ ! -d $BUILD_DIR ] && mkdir $BUILD_DIR
 [ ! -d $CACHE_DIR ] && mkdir $CACHE_DIR
 
-preSystemCheck
+#preSystemCheck
 install_node
 install_meteor
 build
