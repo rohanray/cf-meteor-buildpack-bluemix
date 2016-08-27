@@ -73,10 +73,13 @@ install_meteor() {
 build() {
   (
     cd $BUILD_DIR
-    status "Building meteor bundle"
+    status "Starting pre build npm install"
     #npm install --production 2>&1 | indent
     npm rebuild 2>&1 | indent
+    return_code $?
+    status "STARTING Meteor build"
     meteor build ~/app --directory
+    return_code $?
     cd ~/app/bundle/programs/server
     status "Installing npm dependencies"
     npm install 2>&1 | indent
