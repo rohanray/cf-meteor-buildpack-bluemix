@@ -1,5 +1,10 @@
 #!/bin/bash
 
+BUILD_DIR=$1
+CACHE_DIR=$2
+METEOR_HOME=$BUILD_DIR/.meteor/local
+PATH=$METEOR_HOME/usr/bin:$METEOR_HOME/usr/lib/meteor/bin:$PATH
+
 return_code () {
   if [ ! "$1" -eq 0 ]; then
     echo "[!] Process bombed. Terminating..."
@@ -7,10 +12,15 @@ return_code () {
   fi
 }
 
-BUILD_DIR=$1
-CACHE_DIR=$2
-METEOR_HOME=$BUILD_DIR/.meteor/local
-PATH=$METEOR_HOME/usr/bin:$METEOR_HOME/usr/lib/meteor/bin:$PATH
+spinner() {
+    local i sp n
+    sp='/-\|'
+    n=${#sp}
+    printf ' '
+    while sleep 0.1; do
+        printf "%s\b" "${sp:i++%n:1}"
+    done
+}
 
 indent() {
   c='s/^/       /'
@@ -80,9 +90,13 @@ build() {
     npm install --production 2>&1 | indent
     #npm rebuild 2>&1 | indent
     return_code $?
-    status "STARTING Meteor build"
+    status "Executing Meteor build"
+    spinner &
     meteor build ~/app --directory
     return_code $?
+    kill "$!" # kill the spinner
+    printf '\n'
+    
     cd ~/app/bundle/programs/server
     status "Installing npm dependencies post build"
     npm install 2>&1 | indent
