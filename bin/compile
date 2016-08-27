@@ -24,6 +24,15 @@ status() {
   echo "-----> $*"
 }
 
+preSystemCheck() {
+  status "Check if python is installed"
+  python --version
+  status "Check if make is installed"
+  make --version 
+  status "Check if GCC is installed"
+  gcc --version
+}
+
 node_version=$(curl --silent --get https://semver.io/node/resolve/4.5.x)
 
 install_node() {
