@@ -81,8 +81,8 @@ build() {
     npm install 2>&1 | indent
     mv $BUILD_DIR/.vendor $BUILD_DIR/vendor
     
-    status "ls -la /home/vcap/app/bundle/main.js"
-    ls -la /home/vcap/app/bundle/main.js
+    status "ls -la ~/app/bundle/main.js"
+    ls -la ~/app/bundle/main.js
     mv ~/app $BUILD_DIR/app
     ls -la $BUILD_DIR/app/bundle/main.js
   
