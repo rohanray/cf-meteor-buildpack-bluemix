@@ -74,7 +74,7 @@ build() {
   (
     cd $BUILD_DIR
     status "Building meteor bundle"
-    npm install --production --no-summary 2>&1 | indent
+    npm install --production 2>&1 | indent
     meteor build ~/app --directory
     cd ~/app/bundle/programs/server
     status "Installing npm dependencies"
